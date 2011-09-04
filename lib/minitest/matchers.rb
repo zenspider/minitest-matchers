@@ -7,14 +7,16 @@ module MiniTest::Matchers
     matcher = yield
     check_matcher matcher
 
-    failure_message = if matcher.respond_to? :failure_message
-                        matcher.failure_message
-                      else
-                        "expected to " + matcher.description
-                      end
-
     it "must #{matcher.description}" do
-      assert matcher.matches?(subject), failure_message
+      result = matcher.matches? subject
+
+      failure_message = if matcher.respond_to? :failure_message
+                          matcher.failure_message
+                        else
+                          "expected to " + matcher.description
+                        end
+
+      assert result, failure_message
     end
 
     matcher
@@ -24,18 +26,20 @@ module MiniTest::Matchers
     matcher = yield
     check_matcher matcher
 
-    failure_message = if matcher.respond_to? :negative_failure_message
-                        matcher.negative_failure_message
-                      else
-                        "expected not to " + matcher.description
-                      end
-
     it "wont #{matcher.description}" do
-      if matcher.respond_to? :does_not_match
-        assert matcher.does_not_match?(subject), failure_message
-      else
-        refute matcher.matches?(subject), failure_message
-      end
+      result = if matcher.respond_to? :does_not_match
+                 result = matcher.does_not_match?(subject)
+               else
+                 result = !matcher.matches?(subject)
+               end
+
+      failure_message = if matcher.respond_to? :negative_failure_message
+                          matcher.negative_failure_message
+                        else
+                          "expected not to " + matcher.description
+                        end
+
+      assert result, failure_message
     end
 
     matcher
