@@ -1,7 +1,7 @@
 require "minitest/spec"
 
 module MiniTest::Matchers
-  VERSION = "1.0.1"
+  VERSION = "1.0.2"
 
   def must &block
     matcher = yield
