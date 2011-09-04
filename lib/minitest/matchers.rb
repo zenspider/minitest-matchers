@@ -27,7 +27,7 @@ module MiniTest::Matchers
     check_matcher matcher
 
     it "wont #{matcher.description}" do
-      result = if matcher.respond_to? :does_not_match
+      result = if matcher.respond_to? :does_not_match?
                  result = matcher.does_not_match?(subject)
                else
                  result = !matcher.matches?(subject)
