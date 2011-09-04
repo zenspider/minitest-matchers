@@ -1,22 +1,37 @@
 = minitest-matchers
 
-* FIX (url)
+* http://github.com/zenspider/minitest-matchers
 
 == DESCRIPTION:
 
-FIX (describe your package)
+minitest-matchers adds support for RSpec/Shoulda-style matchers to
+MiniTest::Spec.
+
+A matcher is a class that must implement #description and #matches?
+methods. Expactations are then builded using these two methods.
 
 == FEATURES/PROBLEMS:
 
-* FIX (list of features or problems)
+* Enables you to define reusable matcher classes
 
 == SYNOPSIS:
 
-  FIX (code sample of usage)
+* see https://github.com/bcardarella/valid_attribute (support coming soon hopefully!)
+
+    class Post < ActiveRecord::Base
+      validates :title, :presence => true, :length => 4..20
+    end
+
+    describe Post do
+      subject { Post.new }
+
+      must { have_valid(:title).when("Hello") }
+      wont { have_valid(:title).when(nil, "", "Bad") }
+    end
 
 == REQUIREMENTS:
 
-* FIX (list of requirements)
+* minitest > 2.5.0
 
 == INSTALL:
 
@@ -26,7 +41,7 @@ FIX (describe your package)
 
 (The MIT License)
 
-Copyright (c) Ryan Davis, seattle.rb
+Copyright (c) Ryan Davis, seattle.rb, Wojciech Mach
 
 Permission is hereby granted, free of charge, to any person obtaining
 a copy of this software and associated documentation files (the

@@ -3,6 +3,5 @@ History.txt
 Manifest.txt
 README.txt
 Rakefile
-bin/minitest-matchers
-lib/minitest-matchers.rb
-test/test_minitest-matchers.rb
+lib/minitest/matchers.rb
+test/test_minitest_matchers.rb
