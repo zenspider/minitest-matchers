@@ -26,7 +26,7 @@ module MiniTest::Matchers
     matcher = yield
     check_matcher matcher
 
-    it "wont #{matcher.description}" do
+    it "won't #{matcher.description}" do
       result = if matcher.respond_to? :does_not_match?
                  matcher.does_not_match?(subject)
                else
