@@ -16,9 +16,17 @@ methods. Expactations are then builded using these two methods.
 
 == SYNOPSIS:
 
-* see https://github.com/bcardarella/valid_attribute (support coming soon hopefully!)
+* see example matcher: https://github.com/bcardarella/valid_attribute/blob/master/lib/valid_attribute/matcher.rb
 
-    class Post < ActiveRecord::Base
+    gem "minitest"
+    require "minitest/matchers"
+    require "minitest/autorun"
+    require "valid_attribute"
+    require "active_model"
+
+    class Post
+      include ActiveModel::Validations
+      attr_accessor :title
       validates :title, :presence => true, :length => 4..20
     end
 
@@ -26,7 +34,7 @@ methods. Expactations are then builded using these two methods.
       subject { Post.new }
 
       must { have_valid(:title).when("Hello") }
-      wont { have_valid(:title).when(nil, "", "Bad") }
+      wont { have_valid(:title).when("", nil, "Bad") }
     end
 
 == REQUIREMENTS:
