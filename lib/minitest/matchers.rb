@@ -2,6 +2,7 @@ require "minitest/spec"
 
 module MiniTest::Assertions
   def assert_must matcher, subject, msg = nil
+    MiniTest::Matchers.check_matcher matcher
     result = matcher.matches? subject
 
     msg ||= if matcher.respond_to? :failure_message
@@ -14,11 +15,8 @@ module MiniTest::Assertions
   end
 
   def assert_wont matcher, subject, msg = nil
-    result = if matcher.respond_to? :does_not_match?
-               matcher.does_not_match? subject
-             else
-               !matcher.matches? subject
-             end
+    MiniTest::Matchers.check_matcher matcher
+    result = matcher.matches? subject
 
     msg ||= if matcher.respond_to? :negative_failure_message
               matcher.negative_failure_message
@@ -26,7 +24,7 @@ module MiniTest::Assertions
               "expected not to " + matcher.description
             end
 
-    assert result, msg
+    refute result, msg
   end
 end
 
@@ -40,9 +38,11 @@ module MiniTest::Matchers
 
   def must &block
     matcher = yield
-    check_matcher matcher
+    MiniTest::Matchers.check_matcher matcher
 
     it "must #{matcher.description}" do
+      fail "Please set subject" unless self.respond_to? :subject
+
       assert_must matcher, subject
     end
 
@@ -51,19 +51,21 @@ module MiniTest::Matchers
 
   def wont &block
     matcher = yield
-    check_matcher matcher
+    MiniTest::Matchers.check_matcher matcher
 
     it "wont #{matcher.description}" do
+      fail "Please set subject" unless self.respond_to? :subject
+
       assert_wont matcher, subject
     end
 
     matcher
   end
 
-  def check_matcher matcher
+  def self.check_matcher matcher
     [:description, :matches?].each do |m|
       if !matcher.respond_to?(m) || matcher.send(:description).nil?
-        fail "Matcher must respond to #{m}"
+        fail "Matcher must respond to #{m}."
       end
     end
   end
