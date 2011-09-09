@@ -1,22 +1,49 @@
 require "minitest/spec"
 
+module MiniTest::Assertions
+  def assert_must matcher, subject, msg = nil
+    result = matcher.matches? subject
+
+    msg ||= if matcher.respond_to? :failure_message
+              matcher.failure_message
+            else
+              "expected to " + matcher.description
+            end
+
+    assert result, msg
+  end
+
+  def assert_wont matcher, subject, msg = nil
+    result = if matcher.respond_to? :does_not_match?
+               matcher.does_not_match? subject
+             else
+               !matcher.matches? subject
+             end
+
+    msg ||= if matcher.respond_to? :negative_failure_message
+              matcher.negative_failure_message
+            else
+              "expected not to " + matcher.description
+            end
+
+    assert result, msg
+  end
+end
+
+module MiniTest::Expectations
+  infect_an_assertion :assert_must, :must
+  infect_an_assertion :assert_wont, :wont
+end
+
 module MiniTest::Matchers
-  VERSION = "1.0.3"
+  VERSION = "1.1.0"
 
   def must &block
     matcher = yield
     check_matcher matcher
 
     it "must #{matcher.description}" do
-      result = matcher.matches? subject
-
-      failure_message = if matcher.respond_to? :failure_message
-                          matcher.failure_message
-                        else
-                          "expected to " + matcher.description
-                        end
-
-      assert result, failure_message
+      assert_must matcher, subject
     end
 
     matcher
@@ -27,19 +54,7 @@ module MiniTest::Matchers
     check_matcher matcher
 
     it "wont #{matcher.description}" do
-      result = if matcher.respond_to? :does_not_match?
-                 matcher.does_not_match?(subject)
-               else
-                 !matcher.matches?(subject)
-               end
-
-      failure_message = if matcher.respond_to? :negative_failure_message
-                          matcher.negative_failure_message
-                        else
-                          "expected not to " + matcher.description
-                        end
-
-      assert result, failure_message
+      assert_wont matcher, subject
     end
 
     matcher
