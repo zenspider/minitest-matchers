@@ -5,14 +5,30 @@
 == DESCRIPTION:
 
 minitest-matchers adds support for RSpec/Shoulda-style matchers to
-MiniTest::Spec.
+minitest/unit and minitest/spec.
 
-A matcher is a class that must implement #description and #matches?
-methods. Expactations are then builded using these two methods.
+A matcher is a class that must implement #description, #matches?,
+#failure_message and #negative_failure_message methods.
+Expactations are then builded using these methods.
 
 == FEATURES/PROBLEMS:
 
-* Enables you to define reusable matcher classes
+* Enables you to use existing matcher classes from projects like
+  valid_attribute, (with some additional work) shoulda-matchers and remarkable.
+
+* when using MiniTest::Matchers#must we run the matcher in the context
+  of spec class, not spec instance, so you can't use spec instance level
+  methods/variables just yet:
+
+    describe "index" do
+      let(:post) { Factory.create(:post) }
+      before { get :show, :id => post.to_param }
+
+      must { respond_with(:success) }      # works
+      must { assign_to(:post).with(post) } # won't work
+    end
+
+  We don't support these things in the matcher description for the same reasons.
 
 == SYNOPSIS:
 
@@ -30,6 +46,34 @@ methods. Expactations are then builded using these two methods.
       validates :title, :presence => true, :length => 4..20
     end
 
+    # Using minitest/unit
+
+    class PostTest < MiniTest::Unit::TestCase
+      include ValidAttribute::Method
+
+      def test_validations
+        post = Post.new
+
+        assert_must have_valid(:title).when("Good"), post
+        assert_wont have_valid(:title).when(""), post
+      end
+    end
+
+    # Using minitest/spec
+
+    describe Post do
+      include ValidAttribute::Method
+
+      it "should have validations" do
+        post = Post.new
+
+        post.must have_valid(:title).when("Good")
+        post.wont have_valid(:title).when("")
+      end
+    end
+
+    # Using minitest/spec with subject
+
     describe Post do
       subject { Post.new }
 
@@ -39,7 +83,7 @@ methods. Expactations are then builded using these two methods.
 
 == REQUIREMENTS:
 
-* minitest > 2.5.0
+* minitest >= 2.5.0
 
 == INSTALL:
 

@@ -17,6 +17,14 @@ class KindOfMatcher
   def matches? subject
     subject.kind_of?  @klass
   end
+
+  def failure_message
+    "expected to " + description
+  end
+
+  def negative_failure_message
+    "expected not to " + description
+  end
 end
 
 def be_kind_of klass
