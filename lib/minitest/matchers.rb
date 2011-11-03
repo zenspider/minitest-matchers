@@ -5,7 +5,6 @@ module MiniTest::Matchers
 
   ##
   # Every matcher must respond to following methods:
-  #
   #   - #description
   #   - #matches?
   #   - #failure_message
@@ -80,6 +79,46 @@ module MiniTest
   end
 end
 
+class MiniTest::Spec
+  ##
+  # Define a `must` expectation for implicit subject
+  #
+  # Example:
+  #
+  #   describe Post do
+  #     subject { Post.new }
+  #
+  #     it { must have_valid(:title).when("Good") }
+  #   end
+
+  def must(*args, &block)
+    if respond_to?(:subject)
+      subject.must(*args, &block)
+    else
+      super
+    end
+  end
+
+  ##
+  # Define a `wont` expectation for implicit subject
+  #
+  # Example:
+  #
+  #   describe Post do
+  #     subject { Post.new }
+  #
+  #     it { wont have_valid(:title).when("") }
+  #   end
+
+  def wont(*args, &block)
+    if respond_to?(:subject)
+      subject.wont(*args, &block)
+    else
+      super
+    end
+  end
+end
+
 class MiniTest::Spec # :nodoc:
-  extend MiniTest::Matchers
+  include MiniTest::Matchers
 end

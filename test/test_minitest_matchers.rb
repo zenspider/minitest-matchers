@@ -1,7 +1,7 @@
+gem "minitest"
+require "minitest/spec"
 require "minitest/autorun"
 require "minitest/matchers"
-
-class BadSpec < MiniTest::Spec; end
 
 class BadMatcher; end
 
@@ -48,6 +48,10 @@ describe MiniTest::Unit::TestCase do
 end
 
 describe MiniTest::Spec do
+  it "needs to verify matcher has #description and #matches?" do
+    proc { [].must BadMatcher.new, [] }.must_raise RuntimeError
+  end
+
   it "needs to verify must" do
     [].must(be_kind_of(Array)).must_equal true
     proc { [].must be_kind_of(String) }.must_raise MiniTest::Assertion
@@ -57,60 +61,30 @@ describe MiniTest::Spec do
     [].wont(be_kind_of(String)).must_equal false
     proc { [].wont be_kind_of(Array) }.must_raise MiniTest::Assertion
   end
-end
 
-describe MiniTest::Matchers do
-  describe "must" do
-    let(:spec_class) do
-      Class.new(MiniTest::Spec) do
-        must { KindOfMatcher.new String }
-      end
-    end
-    let(:spec) { spec_class.new "A spec" }
+  it "needs to verify must with implicit subject" do
+    spec_class = Class.new(MiniTest::Spec) do
+      subject { [1, 2, 3] }
 
-    it "defines must expectation" do
-      spec_class.test_methods.grep(/must_be_kind_of/).size.must_equal 1
+      it { must be_kind_of(Array) }
+      it { must be_kind_of(String) }
     end
 
-    it "rejects without subject" do
-      proc { spec.send(spec_class.test_methods.first) }.must_raise RuntimeError
-    end
+    spec = spec_class.new("A spec")
 
-    it "verifies match" do
-      spec_class.send(:subject) { "hello" }
-      spec.send(spec_class.test_methods.first).must_equal true
-    end
-
-    it "verifies mismatch" do
-      spec_class.send(:subject) { 1 }
-      proc { spec.send spec_class.test_methods.first }.must_raise MiniTest::Assertion
-    end
+    proc { spec.send spec_class.test_methods.last}.must_raise MiniTest::Assertion
   end
 
-  describe "wont" do
-    let(:spec_class) do
-      Class.new(MiniTest::Spec) do
-        wont { KindOfMatcher.new String }
-      end
-    end
-    let(:spec) { spec_class.new "A spec" }
+  it "needs to verify wont with implicit subject" do
+    spec_class = Class.new(MiniTest::Spec) do
+      subject { [1, 2, 3] }
 
-    it "defines wont expectation" do
-      spec_class.test_methods.grep(/wont_be_kind_of/).size.must_equal 1
+      it { wont be_kind_of(String) }
+      it { wont be_kind_of(Array) }
     end
 
-    it "rejects without subject" do
-      proc { spec.send(spec_class.test_methods.first) }.must_raise RuntimeError
-    end
+    spec = spec_class.new("A spec")
 
-    it "verifies match" do
-      spec_class.send(:subject) { "hello" }
-      proc { spec.send spec_class.test_methods.first }.must_raise MiniTest::Assertion
-    end
-
-    it "verifies mismatch" do
-      spec_class.send(:subject) { 1 }
-      spec.send(spec_class.test_methods.first).must_equal false
-    end
+    proc { spec.send spec_class.test_methods.last}.must_raise MiniTest::Assertion
   end
 end
