@@ -16,20 +16,6 @@ Expactations are then builded using these methods.
 * Enables you to use existing matcher classes from projects like
   valid_attribute, (with some additional work) shoulda-matchers and remarkable.
 
-* when using MiniTest::Matchers#must we run the matcher in the context
-  of spec class, not spec instance, so you can't use spec instance level
-  methods/variables just yet:
-
-    describe "index" do
-      let(:post) { Factory.create(:post) }
-      before { get :show, :id => post.to_param }
-
-      must { respond_with(:success) }      # works
-      must { assign_to(:post).with(post) } # won't work
-    end
-
-  We don't support these things in the matcher description for the same reasons.
-
 == SYNOPSIS:
 
 * see example matcher: https://github.com/bcardarella/valid_attribute/blob/master/lib/valid_attribute/matcher.rb
@@ -77,13 +63,13 @@ Expactations are then builded using these methods.
     describe Post do
       subject { Post.new }
 
-      must { have_valid(:title).when("Hello") }
-      wont { have_valid(:title).when("", nil, "Bad") }
+      it { must have_valid(:title).when("Hello") }
+      it { wont have_valid(:title).when("", nil, "Bad") }
     end
 
 == REQUIREMENTS:
 
-* minitest >= 2.5.0
+* minitest >= 2.7.0
 
 == INSTALL:
 
