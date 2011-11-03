@@ -5,6 +5,7 @@ module MiniTest::Matchers
 
   ##
   # Every matcher must respond to following methods:
+  #
   #   - #description
   #   - #matches?
   #   - #failure_message
@@ -23,6 +24,12 @@ module MiniTest
   module Assertions
     ##
     # Fails unless matcher.matches?(subject) returns true
+    #
+    # Example:
+    #
+    #   def test_validations
+    #     assert_must be_valid, @user
+    #   end
 
     def assert_must matcher, subject, msg = nil
       MiniTest::Matchers.check_matcher matcher
@@ -35,6 +42,12 @@ module MiniTest
 
     ##
     # Fails if matcher.matches?(subject) returns true
+    #
+    # Example:
+    #
+    #   def test_validations
+    #     assert_wont be_valid, @user
+    #   end
 
     def assert_wont matcher, subject, msg = nil
       MiniTest::Matchers.check_matcher matcher
@@ -49,6 +62,7 @@ module MiniTest
   module Expectations
     ##
     # See MiniTest::Assertions#assert_must
+    #
     #     user.must have_valid(:email).when("user@example.com")
     #
     # :method: must
