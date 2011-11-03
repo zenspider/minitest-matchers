@@ -5,14 +5,16 @@
 == DESCRIPTION:
 
 minitest-matchers adds support for RSpec/Shoulda-style matchers to
-MiniTest::Spec.
+minitest/unit and minitest/spec.
 
-A matcher is a class that must implement #description and #matches?
-methods. Expactations are then builded using these two methods.
+A matcher is a class that must implement #description, #matches?,
+#failure_message and #negative_failure_message methods.
+Expactations are then builded using these methods.
 
 == FEATURES/PROBLEMS:
 
-* Enables you to define reusable matcher classes
+* Enables you to use existing matcher classes from projects like
+  valid_attribute, (with some additional work) shoulda-matchers and remarkable.
 
 == SYNOPSIS:
 
@@ -30,16 +32,44 @@ methods. Expactations are then builded using these two methods.
       validates :title, :presence => true, :length => 4..20
     end
 
+    # Using minitest/unit
+
+    class PostTest < MiniTest::Unit::TestCase
+      include ValidAttribute::Method
+
+      def test_validations
+        post = Post.new
+
+        assert_must have_valid(:title).when("Good"), post
+        assert_wont have_valid(:title).when(""), post
+      end
+    end
+
+    # Using minitest/spec
+
+    describe Post do
+      include ValidAttribute::Method
+
+      it "should have validations" do
+        post = Post.new
+
+        post.must have_valid(:title).when("Good")
+        post.wont have_valid(:title).when("")
+      end
+    end
+
+    # Using minitest/spec with subject
+
     describe Post do
       subject { Post.new }
 
-      must { have_valid(:title).when("Hello") }
-      wont { have_valid(:title).when("", nil, "Bad") }
+      it { must have_valid(:title).when("Hello") }
+      it { wont have_valid(:title).when("", nil, "Bad") }
     end
 
 == REQUIREMENTS:
 
-* minitest > 2.5.0
+* minitest >= 2.7.0
 
 == INSTALL:
 
