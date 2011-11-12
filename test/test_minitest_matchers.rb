@@ -32,10 +32,6 @@ def be_kind_of klass
 end
 
 describe MiniTest::Unit::TestCase do
-  it "needs to verify matcher has #description and #matches?" do
-    proc { assert_must BadMatcher.new, [] }.must_raise RuntimeError
-  end
-
   it "needs to verify assert_must" do
     assert_must(be_kind_of(Array), []).must_equal true
     proc { assert_must be_kind_of(String), [] }.must_raise MiniTest::Assertion
@@ -48,10 +44,6 @@ describe MiniTest::Unit::TestCase do
 end
 
 describe MiniTest::Spec do
-  it "needs to verify matcher has #description and #matches?" do
-    proc { [].must BadMatcher.new, [] }.must_raise RuntimeError
-  end
-
   it "needs to verify must" do
     [].must(be_kind_of(Array)).must_equal true
     proc { [].must be_kind_of(String) }.must_raise MiniTest::Assertion

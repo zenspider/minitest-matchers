@@ -2,21 +2,6 @@ require "minitest/spec"
 
 module MiniTest::Matchers
   VERSION = "1.1.0.rc1" # :nodoc:
-
-  ##
-  # Every matcher must respond to following methods:
-  #   - #description
-  #   - #matches?
-  #   - #failure_message
-  #   - #negative_failure_message
-
-  def self.check_matcher matcher
-    [:description, :matches?, :failure_message, :negative_failure_message].each do |m|
-      unless matcher.respond_to? m
-        fail "Matcher must respond to #{m}."
-      end
-    end
-  end
 end
 
 module MiniTest
@@ -31,10 +16,15 @@ module MiniTest
     #   end
 
     def assert_must matcher, subject, msg = nil
-      MiniTest::Matchers.check_matcher matcher
       result = matcher.matches? subject
 
-      msg = message(msg) { matcher.failure_message }
+      msg = message(msg) do
+        if matcher.respond_to? :negative_failure_message
+          matcher.negative_failure_message
+        else
+          matcher.failure_message_for_should
+        end
+      end
 
       assert result, msg
     end
@@ -49,10 +39,15 @@ module MiniTest
     #   end
 
     def assert_wont matcher, subject, msg = nil
-      MiniTest::Matchers.check_matcher matcher
       result = matcher.matches? subject
 
-      msg = message(msg) { matcher.negative_failure_message }
+      msg = message(msg) do
+        if matcher.respond_to? :negative_failure_message
+          matcher.negative_failure_message
+        else
+          matcher.failure_message_for_should_not
+        end
+      end
 
       refute result, msg
     end
