@@ -4,6 +4,7 @@ require "rubygems"
 require "hoe"
 
 Hoe.plugin :minitest
+Hoe.plugin :gemspec
 
 Hoe.spec "minitest-matchers" do
   developer "Ryan Davis", "ryand-ruby@zenspider.com"
