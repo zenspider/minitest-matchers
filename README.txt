@@ -7,14 +7,15 @@
 minitest-matchers adds support for RSpec/Shoulda-style matchers to
 minitest/unit and minitest/spec.
 
-A matcher is a class that must implement #description, #matches?,
-#failure_message and #negative_failure_message methods.
-Expactations are then builded using these methods.
+More information about matchers can be found here:
+* https://www.relishapp.com/rspec/rspec-expectations
+* http://railscasts.com/episodes/157-rspec-matchers-macros
 
 == FEATURES/PROBLEMS:
 
 * Enables you to use existing matcher classes from projects like
-  valid_attribute, (with some additional work) shoulda-matchers and remarkable.
+  valid_attribute and in the future shoulda-matchers and maybe even remarkable.
+* Can be used both in MiniTest::Unit::TestCase & MiniTest::Spec
 
 == SYNOPSIS:
 
