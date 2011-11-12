@@ -15,14 +15,14 @@ class KindOfMatcher
   end
 
   def matches? subject
-    subject.kind_of?  @klass
+    subject.kind_of? @klass
   end
 
-  def failure_message
+  def failure_message_for_should
     "expected to " + description
   end
 
-  def negative_failure_message
+  def failure_message_for_should_not
     "expected not to " + description
   end
 end
@@ -58,25 +58,23 @@ describe MiniTest::Spec do
     spec_class = Class.new(MiniTest::Spec) do
       subject { [1, 2, 3] }
 
-      it { must be_kind_of(Array) }
       it { must be_kind_of(String) }
     end
 
     spec = spec_class.new("A spec")
 
-    proc { spec.send spec_class.test_methods.last}.must_raise MiniTest::Assertion
+    proc { spec.send spec_class.test_methods.first}.must_raise MiniTest::Assertion
   end
 
   it "needs to verify wont with implicit subject" do
     spec_class = Class.new(MiniTest::Spec) do
       subject { [1, 2, 3] }
 
-      it { wont be_kind_of(String) }
       it { wont be_kind_of(Array) }
     end
 
     spec = spec_class.new("A spec")
 
-    proc { spec.send spec_class.test_methods.last}.must_raise MiniTest::Assertion
+    proc { spec.send spec_class.test_methods.first}.must_raise MiniTest::Assertion
   end
 end
