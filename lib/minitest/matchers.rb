@@ -19,8 +19,8 @@ module MiniTest
       result = matcher.matches? subject
 
       msg = message(msg) do
-        if matcher.respond_to? :negative_failure_message
-          matcher.negative_failure_message
+        if matcher.respond_to? :failure_message
+          matcher.failure_message
         else
           matcher.failure_message_for_should
         end
