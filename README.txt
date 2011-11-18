@@ -11,6 +11,9 @@ More information about matchers can be found here:
 * https://www.relishapp.com/rspec/rspec-expectations
 * http://railscasts.com/episodes/157-rspec-matchers-macros
 
+For use with Rails check out (ValidAttribute + Capybara):
+* https://github.com/wojtekmach/minitest-rails-example
+
 == FEATURES/PROBLEMS:
 
 * Enables you to use existing matcher classes from projects like
