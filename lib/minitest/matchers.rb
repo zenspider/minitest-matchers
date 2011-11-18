@@ -39,8 +39,6 @@ module MiniTest
     #   end
 
     def assert_wont matcher, subject, msg = nil
-      result = matcher.matches? subject
-
       msg = message(msg) do
         if matcher.respond_to? :negative_failure_message
           matcher.negative_failure_message
@@ -49,7 +47,11 @@ module MiniTest
         end
       end
 
-      refute result, msg
+      if matcher.respond_to? :does_not_match?
+        assert matcher.does_not_match?(subject), msg
+      else
+        refute matcher.matches?(subject), msg
+      end
     end
   end
 
