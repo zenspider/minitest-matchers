@@ -71,6 +71,15 @@ For use with Rails check out (ValidAttribute + Capybara):
       it { wont have_valid(:title).when("", nil, "Bad") }
     end
 
+    # or
+
+    describe Post do
+      subject { Post.new }
+
+      must { have_valid(:title).when("Hello") }
+      wont { have_valid(:title).when("", nil, "Bad") }
+    end
+
 == REQUIREMENTS:
 
 * minitest >= 2.7.0

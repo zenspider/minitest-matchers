@@ -78,6 +78,34 @@ end
 
 class MiniTest::Spec
   ##
+  # Expects that matcher matches the subject
+  #
+  # Example:
+  #
+  #   describe Post do
+  #     subject { Post.new }
+  #
+  #     must { have_valid(:title).when("Good") }
+  #   end
+  def self.must(&block)
+    it { subject.must instance_eval(&block) }
+  end
+
+  ##
+  # Expects that matcher does not match the subject
+  #
+  # Example:
+  #
+  #   describe Post do
+  #     subject { Post.new }
+  #
+  #     wont { have_valid(:title).when("Bad") }
+  #   end
+  def self.wont(&block)
+    it { subject.wont instance_eval(&block) }
+  end
+
+  ##
   # Define a `must` expectation for implicit subject
   #
   # Example:
