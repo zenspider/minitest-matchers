@@ -117,11 +117,7 @@ class MiniTest::Spec
   #   end
 
   def must(*args, &block)
-    if respond_to?(:subject)
-      subject.must(*args, &block)
-    else
-      super
-    end
+    subject.must(*args, &block)
   end
 
   ##
@@ -136,11 +132,7 @@ class MiniTest::Spec
   #   end
 
   def wont(*args, &block)
-    if respond_to?(:subject)
-      subject.wont(*args, &block)
-    else
-      super
-    end
+    subject.wont(*args, &block)
   end
 end
 
