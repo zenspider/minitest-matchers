@@ -4,4 +4,5 @@ Manifest.txt
 README.txt
 Rakefile
 lib/minitest/matchers.rb
+lib/minitest-matchers.rb
 test/test_minitest_matchers.rb
