@@ -136,6 +136,55 @@ class MiniTest::Spec
   end
 end
 
+class MiniTest::Unit::TestCase
+  ##
+  # Defines assert_* assetion and must_* expectation for a matcher
+  #
+  # Example:
+  #
+  #   # Say you're implementing Capybara's HaveContent matcher
+  #
+  #   class HaveContent
+  #     # ...
+  #   end
+  #
+  #   MiniTest::Unit::TestCase.register_matcher HaveContent, :have_content
+  #
+  #   class MyTest < Test::Unit::TestCase
+  #     def test_index
+  #       visit "/"
+  #       assert_have_content "Hello", page
+  #     end
+  #   end
+  #
+  #   describe "my test" do
+  #     test "index" do
+  #       visit "/"
+  #       page.must_have_content "Hello"
+  #
+  #       # if you set `page` to be implicit subject, following works too:
+  #       must_have_content "Hello"
+  #     end
+  #   end
+  #
+
+  def self.register_matcher matcher, name, exp_name=name
+    define_method :"assert_#{name}" do |*args|
+      subject = args.pop
+      assert_must matcher.new(*args), subject
+    end
+
+    Object.infect_an_assertion :"assert_#{name}", :"must_#{exp_name}"
+
+    define_method :"refute_#{name}" do |*args|
+      subject = args.pop
+      assert_wont matcher.new(*args), subject
+    end
+
+    Object.infect_an_assertion :"refute_#{name}", :"wont_#{exp_name}"
+  end
+end
+
 class MiniTest::Spec # :nodoc:
   include MiniTest::Matchers
 end

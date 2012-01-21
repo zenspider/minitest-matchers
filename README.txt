@@ -80,6 +80,19 @@ For use with Rails check out (ValidAttribute + Capybara):
       wont { have_valid(:title).when("", nil, "Bad") }
     end
 
+You can also register matcher so that it works similar to built-in
+assertions and expectations.
+
+    class HaveContent
+      # ...
+    end
+
+    MiniTest::Unit::TestCase.register_matcher HaveContent, :have_content
+
+    assert_have_content "Hello", page
+
+    page.must_have_content "Hello"
+
 == REQUIREMENTS:
 
 * minitest >= 2.7.0

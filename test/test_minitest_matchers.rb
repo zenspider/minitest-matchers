@@ -43,6 +43,30 @@ describe MiniTest::Unit::TestCase do
   end
 end
 
+describe MiniTest::Unit::TestCase, :register_matcher do
+  MiniTest::Unit::TestCase.register_matcher KindOfMatcher, :my_kind_of, :be_my_kind_of
+
+  it "needs to verify assert_<matcher>" do
+    assert_my_kind_of(String, "").must_equal true
+    proc { assert_my_kind_of String, [] }.must_raise MiniTest::Assertion
+  end
+
+  it "needs to verify must_<matcher>" do
+    "".must_be_my_kind_of(String).must_equal true
+    proc { [].must_be_my_kind_of String }.must_raise MiniTest::Assertion
+  end
+
+  it "needs to verify refute_<matcher>" do
+    refute_my_kind_of(Array, "").must_equal false
+    proc { refute_my_kind_of Array, [] }.must_raise MiniTest::Assertion
+  end
+
+  it "needs to verify wont<matcher>" do
+    "".wont_be_my_kind_of(Array).must_equal false
+    proc { [].wont_be_my_kind_of(Array) }.must_raise MiniTest::Assertion
+  end
+end
+
 describe MiniTest::Spec do
   it "needs to verify must" do
     [].must(be_kind_of(Array)).must_equal true
