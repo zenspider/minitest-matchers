@@ -1,5 +1,15 @@
 === 1.1.3 / 2011-12-18
 
+* 1 major enhancement
+
+  * Add ::register_matcher
+
+* 1 minor enhancement
+
+  * First check for Matcher#failure_message_for_should
+
+=== 1.1.3 / 2011-12-18
+
 * 1 minor enhancement
 
   * Update Manifest.txt so that it includes lib/minitest-matchers.rb
