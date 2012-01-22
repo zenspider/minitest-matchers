@@ -19,10 +19,10 @@ module MiniTest
       result = matcher.matches? subject
 
       msg = message(msg) do
-        if matcher.respond_to? :failure_message
-          matcher.failure_message
-        else
+        if matcher.respond_to? :failure_message_for_should
           matcher.failure_message_for_should
+        else
+          matcher.failure_message
         end
       end
 
@@ -40,10 +40,10 @@ module MiniTest
 
     def assert_wont matcher, subject, msg = nil
       msg = message(msg) do
-        if matcher.respond_to? :negative_failure_message
-          matcher.negative_failure_message
-        else
+        if matcher.respond_to? :failure_message_for_should_not
           matcher.failure_message_for_should_not
+        else
+          matcher.negative_failure_message
         end
       end
 
