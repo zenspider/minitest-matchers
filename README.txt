@@ -81,17 +81,16 @@ For use with Rails check out (ValidAttribute + Capybara):
     end
 
 You can also register matcher so that it works similar to built-in
-assertions and expectations.
-
-    class HaveContent
-      # ...
-    end
+assertions and expectations. Note subject must be the first argument in assertion.
 
     MiniTest::Unit::TestCase.register_matcher HaveContent, :have_content
+    MiniTest::Unit::TestCase.register_matcher :have_selector, :have_selector
 
-    assert_have_content "Hello", page
+    assert_have_content page, "Hello"
+    assert_Have_selector page, :xpath, "//table/tr"
 
     page.must_have_content "Hello"
+    page.must_Have_selector :xpath, "//table/tr"
 
 == REQUIREMENTS:
 

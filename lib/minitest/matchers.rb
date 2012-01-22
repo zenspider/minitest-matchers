@@ -153,7 +153,8 @@ class MiniTest::Unit::TestCase
   #   class MyTest < Test::Unit::TestCase
   #     def test_index
   #       visit "/"
-  #       assert_have_content "Hello", page
+  #       assert_have_content page, "Hello"
+  #       assert_have_selector page, :xpath, "//table/tr"
   #     end
   #   end
   #
@@ -161,6 +162,7 @@ class MiniTest::Unit::TestCase
   #     test "index" do
   #       visit "/"
   #       page.must_have_content "Hello"
+  #       page.must_have_selector :xpath, "//table/tr"
   #
   #       # if you set `page` to be implicit subject, following works too:
   #       must_have_content "Hello"
@@ -170,18 +172,32 @@ class MiniTest::Unit::TestCase
 
   def self.register_matcher matcher, name, exp_name=name
     define_method :"assert_#{name}" do |*args|
-      subject = args.pop
-      assert_must matcher.new(*args), subject
+      subject = args.shift
+
+      x = if Symbol === matcher
+            send matcher, *args
+          else
+            matcher.new(*args)
+          end
+
+      assert_must x, subject
     end
 
-    Object.infect_an_assertion :"assert_#{name}", :"must_#{exp_name}"
+    Object.infect_an_assertion :"assert_#{name}", :"must_#{exp_name}", true
 
     define_method :"refute_#{name}" do |*args|
-      subject = args.pop
-      assert_wont matcher.new(*args), subject
+      subject = args.shift
+
+      x = if Symbol === matcher
+            send matcher, *args
+          else
+            matcher.new(*args)
+          end
+
+      assert_wont x, subject
     end
 
-    Object.infect_an_assertion :"refute_#{name}", :"wont_#{exp_name}"
+    Object.infect_an_assertion :"refute_#{name}", :"wont_#{exp_name}", true
   end
 end
 
