@@ -1,7 +1,7 @@
 .autotest
 History.txt
 Manifest.txt
-README.txt
+README.md
 Rakefile
 lib/minitest/matchers.rb
 lib/minitest-matchers.rb
