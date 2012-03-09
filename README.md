@@ -24,7 +24,7 @@ For use with Rails check out (ValidAttribute + Capybara):
 
 ## Synopsis
 
-see example matcher: https://github.com/bcardarella/valid\_attribute/blob/master/lib/valid\_attribute/matcher.rb
+see example matcher: https://github.com/bcardarella/valid_attribute/blob/master/lib/valid_attribute/matcher.rb
 
 ```ruby
 require "minitest/matchers"
