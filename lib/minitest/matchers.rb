@@ -138,7 +138,7 @@ end
 
 class MiniTest::Unit::TestCase
   ##
-  # Defines assert_* assetion and must_* expectation for a matcher
+  # Defines assert_* assertion and must_* expectation for a matcher
   #
   # Example:
   #
