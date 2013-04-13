@@ -19,12 +19,12 @@ For use with Rails check out (ValidAttribute + Capybara):
 ## Features/Problems
 
 * Enables you to use existing matcher classes from projects like
-  valid\_attribute
+  valid\_attribute and capybara
 * Can be used both in MiniTest::Unit::TestCase & MiniTest::Spec
 
 ## Synopsis
 
-see example matcher: https://github.com/bcardarella/valid_attribute/blob/master/lib/valid_attribute/matcher.rb
+see example matcher: [matcher.rb](https://github.com/bcardarella/valid_attribute/blob/master/lib/valid_attribute/matcher.rb)
 
 ```ruby
 require "minitest/matchers"
@@ -99,19 +99,15 @@ page.must_have_selector :xpath, "//table/tr"
 
 ## Requirements
 
-* minitest >= 2.7.0
+* `minitest >= 2.7.0`
 
 ## Install
 
-* Run:
-
- ```
-[sudo] gem install minitest-matchers
+```
+gem install minitest-matchers
 ```
 
-or
-
-* add to Gemfile:
+or add to Gemfile:
 
 ```ruby
 group :test do
