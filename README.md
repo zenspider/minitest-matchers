@@ -19,7 +19,7 @@ For use with Rails check out (ValidAttribute + Capybara):
 ## Features/Problems
 
 * Enables you to use existing matcher classes from projects like
-  valid\_attribute and in the future shoulda-matchers and maybe even remarkable.
+  valid\_attribute
 * Can be used both in MiniTest::Unit::TestCase & MiniTest::Spec
 
 ## Synopsis
