@@ -2,6 +2,10 @@
 
 http://github.com/wojtekmach/minitest-matchers
 
+## Warning
+
+Don't use it! Writing simple assertions (and Minitest way of transforming them to expectations) is almost always a better idea anyway. Work with your favourite library authors to start with assertions and add matchers for convenience and not the other way around. Keep it simple.
+
 ## Description
 
 minitest-matchers adds support for RSpec/Shoulda-style matchers to
