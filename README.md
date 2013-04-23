@@ -1,6 +1,6 @@
 # minitest-matchers
 
-http://github.com/zenspider/minitest-matchers
+http://github.com/wojtekmach/minitest-matchers
 
 ## Description
 
